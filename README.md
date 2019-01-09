@@ -6,7 +6,7 @@ cd mining
 npm install
 # Quick Config
 * 1.vim index.js
-* 2.replace defaultPrivateKey to your eos account privatekey.
-* 3.replace fromaccount to your eos account.
+* 2.replace the value of defaultPrivateKey to your eos account privatekey.
+* 3.replace the value of fromaccount to your eos account.
 * 4.sh ./run.sh
 ## HAPPY MINING!
