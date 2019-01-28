@@ -13,12 +13,13 @@ const fromaccount = "please input your bet account "; //for from account
 const minedays = "30"; //days to mine
 const betamount = "1"; //bet amount
 const referreraccount = "bobinggame14"; //reffer account
+const first_level_account = "bobinggame14"; //first level account
 
 const signatureProvider = new JsSignatureProvider([defaultPrivateKey]);
 const rpc = new JsonRpc('http://eos.greymass.com', { fetch });
 const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
 
-function transfer(from, to, quantity, type, seed, clientSeed, expiration_timestamp, referrer, signature) {
+function transfer(from, to, quantity, type, seed, clientSeed, expiration_timestamp, referrer, first_level, signature) {
   (async () => {
     const result = await api.transact({
       actions: [{
@@ -32,12 +33,12 @@ function transfer(from, to, quantity, type, seed, clientSeed, expiration_timesta
           from: from,
           to: to,
           quantity: Number(quantity).toFixed(4) + ' ' + type,
-          memo: seed + '-' + clientSeed + '-' + expiration_timestamp + '-' + referrer + '-' + signature
+          memo: seed + '-' + clientSeed + '-' + expiration_timestamp + '-' + referrer + '-' + first_level + '-' + signature
         },
       }]
     }, {
-        blocksBehind: 3,
-        expireSeconds: 30,
+        blocksBehind: 1,
+        expireSeconds: 60,
       })
       .then(res => {
         console.log("success:", res);
@@ -85,6 +86,7 @@ function doTransfer() {
       seed = body.seed,
       expiration_timestamp = body.expiration_timestamp,
       referrer = referreraccount,
+      first_level = first_level_account;
       signature = body.signature;
 
     // console.log("=== data for transfer ===");
@@ -98,7 +100,7 @@ function doTransfer() {
     // console.log("referrer:", referrer);
     // console.log("signature:", signature);
     console.log("now:", new Date());
-    transfer(from, to, quantity, type, seed, clientSeed, expiration_timestamp, referrer, signature);
+    transfer(from, to, quantity, type, seed, clientSeed, expiration_timestamp, referrer, first_level, signature);
   })
 }
 
